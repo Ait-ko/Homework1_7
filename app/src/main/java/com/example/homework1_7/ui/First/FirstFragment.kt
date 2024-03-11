@@ -1,6 +1,7 @@
 package com.example.homework1_7.ui.First
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,6 +58,7 @@ class FirstFragment : BaseFragment() {
         viewModel.getCameras().stateHandler(
             success = { it ->
                 val list = it.data.cameras
+                Log.e("ololo", "List of firstModels: ${list.toString()}")
                 CoroutineScope(Dispatchers.IO).launch {
                     App.db.cameraDao().clearAll()
                     list.forEach {
@@ -67,10 +69,12 @@ class FirstFragment : BaseFragment() {
                             room = it.room,
                             snapshot = it.snapshot
                         )
+                        Log.e("ololo", "first : ${camera.toString()}")
                         App.db.cameraDao().insertCamera(camera)
                     }
                     withContext(Dispatchers.Main) {
                         val listDB = App.db.cameraDao().getAll()
+                        Log.e("ololo", "List of firstEntiies: ${listDB.toString()}")
                         adapter.submitList(listDB)
                         adapter.notifyDataSetChanged()
                     }

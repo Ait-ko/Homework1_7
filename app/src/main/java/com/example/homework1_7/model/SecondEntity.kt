@@ -7,11 +7,11 @@ import java.io.Serializable
 
 @Entity(tableName = "door")
 data class SecondEntity(
-    val favorites: Boolean,
+    val favorites: Boolean?=false,
     @PrimaryKey(autoGenerate = true)
     val id: Int?=null,
-    val name: String,
-    val room: String,
-    val snapshot: String
-): Serializable
+    val name: String?="",
+    val room: String?="",
+    val snapshot: String?=""
+):Serializable
 
