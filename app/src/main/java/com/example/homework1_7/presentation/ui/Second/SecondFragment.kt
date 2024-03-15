@@ -1,15 +1,16 @@
-package com.example.homework1_7.ui.First
-
+package com.example.homework1_7.presentation.ui.Second
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.homework1_7.App
+import com.example.homework1_7.R
 import com.example.homework1_7.base.BaseFragment
-import com.example.homework1_7.databinding.FragmentFirstBinding
-import com.example.homework1_7.model.FirstEntity
+import com.example.homework1_7.databinding.FragmentSecondBinding
+import com.example.homework1_7.model.SecondEntity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,18 +18,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
-class FirstFragment : BaseFragment() {
+class SecondFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentFirstBinding
-    private val viewModel: FirstViewModel by viewModels()
-    private val adapter = FirstAdapter(false)
-    private var list: List<FirstEntity> = mutableListOf()
+    private lateinit var binding: FragmentSecondBinding
+    private val viewModel: SecondViewModel by viewModels()
+    private val adapter = DoorAdapter(true)
+    private var list: List<SecondEntity> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentFirstBinding.inflate(inflater, container, false)
+        binding = FragmentSecondBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -36,7 +37,7 @@ class FirstFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rvCameras.adapter = adapter
         CoroutineScope(Dispatchers.IO).launch {
-            list = App.db.cameraDao().getAll()
+            list = App.db.doorDao().getAll()
             withContext(Dispatchers.Main) {
                 if (list.isEmpty()) {
                     getData()
@@ -47,34 +48,33 @@ class FirstFragment : BaseFragment() {
             }
         }
 
-
         binding.swiperefresh.setOnRefreshListener {
             getData()
         }
-
     }
+
 
     fun getData() {
         viewModel.getCameras().stateHandler(
             success = { it ->
-                val list = it.data.cameras
-                Log.e("ololo", "List of firstModels: ${list.toString()}")
+                val list = it.data
+                Log.e("ololo", "List of secondModels: ${list.toString()}")
                 CoroutineScope(Dispatchers.IO).launch {
-                    App.db.cameraDao().clearAll()
+                    App.db.doorDao().clearAll()
                     list.forEach {
-                        val camera = FirstEntity(
+                        val door = SecondEntity(
                             favorites = it.favorites,
                             name = it.name,
-                            rec = it.rec,
                             room = it.room,
                             snapshot = it.snapshot
                         )
-                        Log.e("ololo", "first : ${camera.toString()}")
-                        App.db.cameraDao().insertCamera(camera)
+                        Log.e("ololo", "second: ${door.toString()}")
+                        App.db.doorDao().insertDoor(door)
+
                     }
+                    val listDB = App.db.doorDao().getAll()
+                    Log.e("ololo", "List of secondEntiies: ${listDB.toString()}")
                     withContext(Dispatchers.Main) {
-                        val listDB = App.db.cameraDao().getAll()
-                        Log.e("ololo", "List of firstEntiies: ${listDB.toString()}")
                         adapter.submitList(listDB)
                         adapter.notifyDataSetChanged()
                     }
@@ -84,4 +84,4 @@ class FirstFragment : BaseFragment() {
     }
 
 
-    }
+}

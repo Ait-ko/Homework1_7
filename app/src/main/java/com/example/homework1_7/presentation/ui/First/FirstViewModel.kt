@@ -1,4 +1,4 @@
-package com.example.homework1_7.ui.First
+package com.example.homework1_7.presentation.ui.First
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

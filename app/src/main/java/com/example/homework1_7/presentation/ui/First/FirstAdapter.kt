@@ -1,4 +1,4 @@
-package com.example.homework1_7.ui.Second
+package com.example.homework1_7.presentation.ui.First
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,33 +8,32 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.homework1_7.databinding.ItemCameraBinding
-import com.example.homework1_7.model.SecondEntity
+import com.example.homework1_7.model.FirstEntity
 
 
-class DoorAdapter(private val isDoor: Boolean) :
-    ListAdapter<SecondEntity, DoorViewHolder>(DoorDiffUtil()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoorViewHolder {
-        return DoorViewHolder(
+class FirstAdapter(private val isDoor : Boolean) :
+    ListAdapter<FirstEntity, RecyclerViewHolder>(CameraDiffUtil()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewHolder =
+        RecyclerViewHolder(
             ItemCameraBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             ), isDoor
+
         )
 
-    }
-
-    override fun onBindViewHolder(holder: DoorViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
 
 }
 
-class DoorViewHolder(private var binding: ItemCameraBinding, private val isDoor: Boolean) :
+class RecyclerViewHolder(private var binding:ItemCameraBinding, private val isDoor: Boolean) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(camera: SecondEntity) = with(binding) {
+    fun bind(camera: FirstEntity) = with(binding) {
         ivLock.visibility = if (isDoor) View.VISIBLE else View.GONE
         iv.load(camera.snapshot)
         tv.text = camera.name
@@ -78,13 +77,10 @@ class DoorViewHolder(private var binding: ItemCameraBinding, private val isDoor:
     }
 }
 
-class DoorDiffUtil : DiffUtil.ItemCallback<SecondEntity>() {
-    override fun areItemsTheSame(oldItem: SecondEntity, newItem: SecondEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
+class CameraDiffUtil : DiffUtil.ItemCallback<FirstEntity>() {
+    override fun areItemsTheSame(oldItem: FirstEntity, newItem: FirstEntity)= oldItem.id == newItem.id
 
-    override fun areContentsTheSame(oldItem: SecondEntity, newItem: SecondEntity): Boolean {
-        return oldItem == newItem
-    }
+
+    override fun areContentsTheSame(oldItem: FirstEntity, newItem: FirstEntity) = oldItem == newItem
 
 }

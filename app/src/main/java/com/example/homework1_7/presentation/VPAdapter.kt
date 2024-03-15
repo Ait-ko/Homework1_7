@@ -1,11 +1,11 @@
-package com.example.homework1_7
+package com.example.homework1_7.presentation
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.homework1_7.ui.First.FirstFragment
-import com.example.homework1_7.ui.Second.SecondFragment
+import com.example.homework1_7.presentation.ui.First.FirstFragment
+import com.example.homework1_7.presentation.ui.Second.SecondFragment
 
 
 class VPAdapter (

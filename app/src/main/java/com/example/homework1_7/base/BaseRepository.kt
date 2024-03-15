@@ -8,7 +8,7 @@ import com.example.homework1_7.data.Resource
 import kotlinx.coroutines.Dispatchers
 
 
-abstract class BaseRepository (private val api: AppApiService){
+abstract class BaseRepository (){
     fun <T> apiRequest(apiCall: suspend () -> T): LiveData<Resource<T>> =
         liveData(Dispatchers.Main) {
             emit(Resource.Loading())

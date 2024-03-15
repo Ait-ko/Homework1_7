@@ -1,8 +1,9 @@
-package com.example.homework1_7
+package com.example.homework1_7.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.homework1_7.databinding.ActivityMainBinding
+import com.example.homework1_7.presentation.VPAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {

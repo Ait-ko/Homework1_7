@@ -1,6 +1,12 @@
 package com.example.homework1_7.di
 
+import androidx.databinding.tool.Context
+import androidx.room.Room
 import com.example.homework1_7.data.AppApiService
+import com.example.homework1_7.data.AppDatabase
+import com.example.homework1_7.data.Repository
+import com.example.homework1_7.domain.repositories.FirstRepository
+import com.example.homework1_7.domain.repositories.SecondRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,6 +63,26 @@ import javax.inject.Singleton
         ): AppApiService {
             return retrofit.create(AppApiService::class.java)
         }
+    @Singleton
+    @Provides
+    fun provideFirstRepository(api: AppApiService,db: AppDatabase): FirstRepository {
+        return Repository(api,db)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSecondRepository(api: AppApiService,db:AppDatabase): SecondRepository {
+        return Repository(api,db)
+    }
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            "database-name"
+        ).build()
+    }
 
 
     }
